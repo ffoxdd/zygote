@@ -43,7 +43,7 @@ describe Zygote::Seeder do
     end
 
     context "update" do
-      it "updates an existing seed by id" do
+      it "can update by id" do
         define_active_record_class("SeededModel") { |t| t.string :name }
 
         SeededModel.create!(id: 3, name: "old name")
@@ -61,7 +61,7 @@ describe Zygote::Seeder do
         )
       end
 
-      it "updates an existing seed by keys" do
+      it "can update by keys" do
         define_active_record_class("SeededModel") do |t|
           t.integer :x
           t.integer :y
