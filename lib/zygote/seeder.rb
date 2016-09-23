@@ -4,7 +4,11 @@ class Zygote::Seeder
   end
 
   def define(name:, model_class:, attributes:)
-    definitions << Definition.new(name: name, model_class: model_class, attributes: attributes)
+    definitions << Definition.new(
+      name: name,
+      model_class: model_class,
+      attributes: attributes
+    )
   end
 
   def seed(*names)
@@ -19,16 +23,24 @@ class Zygote::Seeder
   end
 
   class Definition
-    def initialize(name:, model_class:, attributes:)
+    def initialize(name:, model_class:, attributes:, keys: [:id])
       @name = name
       @model_class = model_class
       @attributes = attributes
+      @keys = keys
     end
 
-    attr_reader :name, :model_class, :attributes
+    attr_reader :name, :model_class, :attributes, :keys
 
     def create_or_update
-      model_class.create!(attributes)
+      model_class
+        .where(key_attributes)
+        .first_or_initialize
+        .update!(attributes)
+    end
+
+    def key_attributes
+      attributes.slice(*keys)
     end
   end
 end

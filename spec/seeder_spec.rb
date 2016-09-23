@@ -24,6 +24,22 @@ describe Zygote::Seeder do
         an_object_having_attributes(name: "simple seed")
       )
     end
+
+    it "updates an existing seed by id" do
+      SeededModel.create!(name: "old name")
+
+      seeder.define(
+        name: :changed_seed,
+        model_class: SeededModel,
+        attributes: {name: "new name"}
+      )
+
+      seeder.seed(:changed_seed)
+
+      expect(SeededModel.all).to contain_exactly(
+        an_object_having_attributes(name: "new name")
+      )
+    end
   end
 
 end
