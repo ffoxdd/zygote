@@ -2,5 +2,6 @@ require "zygote/version"
 require "active_record"
 
 module Zygote
-  # Your code goes here...
+  autoload :VERSION, "zygote/version"
+  autoload :Seeder, "zygote/seeder"
 end
