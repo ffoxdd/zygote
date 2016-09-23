@@ -29,6 +29,8 @@ class Zygote::Seeder
       @model_class = model_class
       @attributes = attributes
       @keys = keys
+
+      raise ArgumentError unless keys.all? { |key| attributes.has_key?(key) }
     end
 
     attr_reader :name, :model_class, :attributes, :keys
