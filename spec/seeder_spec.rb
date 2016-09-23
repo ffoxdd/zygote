@@ -5,7 +5,7 @@ describe Zygote::Seeder do
   let(:seeder) { Zygote::Seeder.new }
 
   describe "#define" do
-    it "raises an error when keys are not specified as arguments" do
+    it "raises an error when keys are not specified" do
       expect {
         seeder.define(
           name: :seed_name,
