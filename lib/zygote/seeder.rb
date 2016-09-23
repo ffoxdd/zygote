@@ -3,7 +3,7 @@ class Zygote::Seeder
     @definitions = []
   end
 
-  def define(name:, model_class:, keys: [:id], attributes:)
+  def define(name: nil, model_class:, keys: [:id], attributes:)
     definitions << Definition.new(
       name: name,
       model_class: model_class,

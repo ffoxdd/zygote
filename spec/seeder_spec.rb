@@ -15,6 +15,12 @@ describe Zygote::Seeder do
         )
       }.to raise_error(ArgumentError)
     end
+
+    it "can define a seed without a name" do
+      expect {
+        seeder.define(model_class: Object, attributes: {id: 1})
+      }.to_not raise_error
+    end
   end
 
   describe "#seed" do
