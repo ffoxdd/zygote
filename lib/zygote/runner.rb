@@ -19,7 +19,9 @@ class Zygote::Runner
   end
 
   def load_file(filename)
-    File.open(filename) { |f| eval(f.read) }
+    ActiveRecord::Base.transaction do
+      File.open(filename) { |f| eval(f.read) }
+    end
   end
 
   def filenames
