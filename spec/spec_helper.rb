@@ -1,7 +1,6 @@
 $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 require 'zygote'
-
-# ENV["DB"] ||= 'sqlite3'
+require 'pry'
 
 ActiveRecord::Base.establish_connection(
   adapter: "sqlite3",
@@ -21,4 +20,12 @@ RSpec.configure do |config|
       example.run
     end
   end
+end
+
+def define_active_record_class(class_name, &table_definition)
+  ActiveRecord::Schema.define version: 0 do
+    create_table(class_name.tableize, {force: true}, &table_definition)
+  end
+
+  stub_const(class_name.classify, Class.new(ActiveRecord::Base))
 end
