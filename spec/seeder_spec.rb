@@ -86,4 +86,19 @@ describe Zygote::Seeder do
     end
   end
 
+  describe "#seed_all" do
+    it "seeds all definitions" do
+      define_active_record_class("SeededModel")
+
+      seeder.define(model_class: SeededModel, attributes: {id: 1})
+      seeder.define(model_class: SeededModel, attributes: {id: 2})
+
+      seeder.seed_all
+
+      expect(SeededModel.all).to contain_exactly(
+        an_object_having_attributes(id: 1),
+        an_object_having_attributes(id: 2)
+      )
+    end
+  end
 end
