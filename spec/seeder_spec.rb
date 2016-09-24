@@ -7,18 +7,21 @@ describe Zygote::Seeder do
   describe "#define" do
     it "raises an error when keys are not specified" do
       expect {
-        seeder.define(
+        definition = Zygote::Definition.new(
           name: :seed_name,
           model_class: Object,
           keys: [:id],
           attributes: {name: "name"}
         )
+
+        seeder.define(definition)
       }.to raise_error(ArgumentError)
     end
 
     it "can define a seed without a name" do
       expect {
-        seeder.define(model_class: Object, attributes: {id: 1})
+        definition = Zygote::Definition.new(model_class: Object, attributes: {id: 1})
+        seeder.define(definition)
       }.to_not raise_error
     end
   end
@@ -28,11 +31,12 @@ describe Zygote::Seeder do
       it "creates a new seed when one doesn't already exist" do
         define_active_record_class("SeededModel") { |t| t.string :name }
 
-        seeder.define(
+        definition = Zygote::Definition.new(
           name: :new_seed,
           model_class: SeededModel,
           attributes: {id: 1, name: "new seed"}
         )
+        seeder.define(definition)
 
         seeder.seed(:new_seed)
 
@@ -48,11 +52,13 @@ describe Zygote::Seeder do
 
         SeededModel.create!(id: 3, name: "old name")
 
-        seeder.define(
+        definition = Zygote::Definition.new(
           name: :changed_seed,
           model_class: SeededModel,
           attributes: {id: 3, name: "new name"}
         )
+
+        seeder.define(definition)
 
         seeder.seed(:changed_seed)
 
@@ -70,12 +76,14 @@ describe Zygote::Seeder do
 
         SeededModel.create!(x: 1, y: 2, value: 100)
 
-        seeder.define(
+        definition = Zygote::Definition.new(
           name: :keyed_seed,
           model_class: SeededModel,
           keys: [:x, :y],
           attributes: {x: 1, y: 2, value: 200}
         )
+
+        seeder.define(definition)
 
         seeder.seed(:keyed_seed)
 
@@ -90,8 +98,12 @@ describe Zygote::Seeder do
     it "seeds all definitions" do
       define_active_record_class("SeededModel")
 
-      seeder.define(model_class: SeededModel, attributes: {id: 1})
-      seeder.define(model_class: SeededModel, attributes: {id: 2})
+      definitions = [
+        Zygote::Definition.new(model_class: SeededModel, attributes: {id: 1}),
+        Zygote::Definition.new(model_class: SeededModel, attributes: {id: 2})
+      ]
+
+      definitions.each { |definition| seeder.define(definition) }
 
       seeder.seed_all
 

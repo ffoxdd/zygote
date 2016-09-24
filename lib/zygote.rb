@@ -4,6 +4,7 @@ require "active_record"
 module Zygote
   autoload :VERSION, "zygote/version"
   autoload :Seeder, "zygote/seeder"
+  autoload :Definition, "zygote/definition"
   autoload :Runner, "zygote/runner"
 
   mattr_accessor :seed_paths

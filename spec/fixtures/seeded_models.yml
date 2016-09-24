@@ -16,4 +16,5 @@
   keys:
     - name
   attributes:
+    id: 3
     name: "keyed model"
