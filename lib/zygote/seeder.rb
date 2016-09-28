@@ -7,11 +7,7 @@ class Zygote::Seeder
     definitions << definition
   end
 
-  def seed(*names)
-    names.each { |name| definition_named(name).create_or_update }
-  end
-
-  def seed_all
+  def seed
     definitions.each(&:create_or_update)
   end
 

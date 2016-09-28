@@ -27,74 +27,6 @@ describe Zygote::Seeder do
   end
 
   describe "#seed" do
-    context "create" do
-      it "creates a new seed when one doesn't already exist" do
-        define_active_record_class("SeededModel") { |t| t.string :name }
-
-        definition = Zygote::Definition.new(
-          name: :new_seed,
-          model_class: SeededModel,
-          attributes: {id: 1, name: "new seed"}
-        )
-        seeder.define(definition)
-
-        seeder.seed(:new_seed)
-
-        expect(SeededModel.all).to contain_exactly(
-          an_object_having_attributes(id: anything, name: "new seed")
-        )
-      end
-    end
-
-    context "update" do
-      it "can update by id" do
-        define_active_record_class("SeededModel") { |t| t.string :name }
-
-        SeededModel.create!(id: 3, name: "old name")
-
-        definition = Zygote::Definition.new(
-          name: :changed_seed,
-          model_class: SeededModel,
-          attributes: {id: 3, name: "new name"}
-        )
-
-        seeder.define(definition)
-
-        seeder.seed(:changed_seed)
-
-        expect(SeededModel.all).to contain_exactly(
-          an_object_having_attributes(name: "new name")
-        )
-      end
-
-      it "can update by keys" do
-        define_active_record_class("SeededModel") do |t|
-          t.integer :x
-          t.integer :y
-          t.integer :value
-        end
-
-        SeededModel.create!(x: 1, y: 2, value: 100)
-
-        definition = Zygote::Definition.new(
-          name: :keyed_seed,
-          model_class: SeededModel,
-          keys: [:x, :y],
-          attributes: {x: 1, y: 2, value: 200}
-        )
-
-        seeder.define(definition)
-
-        seeder.seed(:keyed_seed)
-
-        expect(SeededModel.all).to contain_exactly(
-          an_object_having_attributes(x: 1, y: 2, value: 200)
-        )
-      end
-    end
-  end
-
-  describe "#seed_all" do
     it "seeds all definitions" do
       define_active_record_class("SeededModel")
 
@@ -105,7 +37,7 @@ describe Zygote::Seeder do
 
       definitions.each { |definition| seeder.define(definition) }
 
-      seeder.seed_all
+      seeder.seed
 
       expect(SeededModel.all).to contain_exactly(
         an_object_having_attributes(id: 1),

@@ -10,7 +10,7 @@ module Zygote
 
     def run
       load_definitions
-      seeder.seed_all
+      seeder.seed
     end
 
     private
