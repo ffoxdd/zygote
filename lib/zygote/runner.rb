@@ -8,27 +8,19 @@ module Zygote
     end
 
     def run
-      load_definitions
+      definitions.each { |definition| seeder.define(definition) }
       seeder.seed
     end
 
     private
     attr_reader :seeder, :paths
 
-    def load_definitions
-      filenames.each { |filename| load_file(filename) }
+    def definitions
+      filenames.flat_map { |filename| DefinitionsFile.new(filename).definitions }
     end
 
     def filenames
       Find.find(*paths).grep(/.*\.yml/)
-    end
-
-    def load_file(filename)
-      definitions(filename).each { |definition| seeder.define(definition) }
-    end
-
-    def definitions(filename)
-      DefinitionsFile.new(filename).definitions
     end
 
     class DefinitionsFile
