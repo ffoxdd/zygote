@@ -27,16 +27,19 @@ describe Zygote::Seeder do
   end
 
   describe "#seed" do
-    it "seeds all definitions" do
-      define_active_record_class("SeededModel")
-
-      definitions = [
+    let(:definitions) do
+      [
         Zygote::Definition.new(model_class: SeededModel, attributes: {id: 1}),
         Zygote::Definition.new(model_class: SeededModel, attributes: {id: 2})
       ]
+    end
 
+    before do
+      define_active_record_class("SeededModel")
       definitions.each { |definition| seeder.define(definition) }
+    end
 
+    it "seeds all definitions" do
       seeder.seed
 
       expect(SeededModel.all).to contain_exactly(
