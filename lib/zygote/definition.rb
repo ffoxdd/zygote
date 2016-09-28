@@ -21,6 +21,8 @@ class Zygote::Definition
     attributes.slice(*keys)
   end
 
+  private
+
   def all_keys_specified?
     keys.all? { |key| attributes.has_key?(key) }
   end
