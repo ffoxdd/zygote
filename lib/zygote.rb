@@ -6,6 +6,7 @@ module Zygote
   autoload :Seeder, "zygote/seeder"
   autoload :Definition, "zygote/definition"
   autoload :Runner, "zygote/runner"
+  autoload :Upsert, "zygote/upsert"
 
   mattr_accessor :seed_paths
   @@seed_paths = ['db/seeds']

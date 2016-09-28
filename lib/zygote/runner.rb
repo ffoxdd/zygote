@@ -1,7 +1,6 @@
 require 'find'
 
 module Zygote
-
   class Runner
     def initialize(seeder:, paths:)
       @seeder = seeder
@@ -60,5 +59,4 @@ module Zygote
       end
     end
   end
-
 end

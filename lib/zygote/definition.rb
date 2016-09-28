@@ -10,13 +10,6 @@ class Zygote::Definition
 
   attr_reader :name, :model_class, :attributes, :keys
 
-  def create_or_update
-    model_class
-      .where(key_attributes)
-      .first_or_initialize
-      .update!(attributes)
-  end
-
   def key_attributes
     attributes.slice(*keys)
   end

@@ -1,20 +1,18 @@
-class Zygote::Seeder
-  def initialize
-    @definitions = []
-  end
+module Zygote
+  class Seeder
+    def initialize
+      @definitions = []
+    end
 
-  def define(definition)
-    definitions << definition
-  end
+    def define(definition)
+      definitions << definition
+    end
 
-  def seed
-    definitions.each(&:create_or_update)
-  end
+    def seed
+      definitions.each { |definition| Upsert.perform(definition) }
+    end
 
-  private
-  attr_reader :definitions
-
-  def definition_named(name) # TODO: memoize
-    definitions.find { |definition| definition.name == name }
+    private
+    attr_reader :definitions
   end
 end
