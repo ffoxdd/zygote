@@ -4,48 +4,19 @@ describe Zygote::Seeder do
 
   let(:seeder) { Zygote::Seeder.new }
 
-  describe "#define" do
-    it "raises an error when keys are not specified" do
-      expect {
-        definition = Zygote::Definition.new(
-          name: :seed_name,
-          model_class: Object,
-          keys: [:id],
-          attributes: {name: "name"}
-        )
+  describe "#define/#seed" do
+    let(:definition_1) { double(:definition_1) }
+    let(:definition_2) { double(:definition_2) }
 
-        seeder.define(definition)
-      }.to raise_error(ArgumentError)
-    end
+    it "upserts defined seeds" do
+      expect(Zygote::Upsert).to receive(:perform).with(definition_1)
+      expect(Zygote::Upsert).to receive(:perform).with(definition_2)
 
-    it "can define a seed without a name" do
-      expect {
-        definition = Zygote::Definition.new(model_class: Object, attributes: {id: 1})
-        seeder.define(definition)
-      }.to_not raise_error
-    end
-  end
+      seeder.define(definition_1)
+      seeder.define(definition_2)
 
-  describe "#seed" do
-    let(:definitions) do
-      [
-        Zygote::Definition.new(model_class: SeededModel, attributes: {id: 1}),
-        Zygote::Definition.new(model_class: SeededModel, attributes: {id: 2})
-      ]
-    end
-
-    before do
-      define_active_record_class("SeededModel")
-      definitions.each { |definition| seeder.define(definition) }
-    end
-
-    it "seeds all definitions" do
       seeder.seed
-
-      expect(SeededModel.all).to contain_exactly(
-        an_object_having_attributes(id: 1),
-        an_object_having_attributes(id: 2)
-      )
     end
   end
+
 end
