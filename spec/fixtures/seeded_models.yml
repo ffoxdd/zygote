@@ -9,7 +9,7 @@
   name: :named_model
   attributes:
     id: 2
-    name: "named model"
+    name: named model
 
 -
   model_class: SeededModel
@@ -17,4 +17,12 @@
     - name
   attributes:
     id: 3
-    name: "keyed model"
+    name: keyed model
+
+-
+  model_class: SeededModel
+  name: :model_with_association
+  attributes:
+    id: 4,
+    name: model with association
+    parent: :named_model

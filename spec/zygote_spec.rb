@@ -8,9 +8,13 @@ describe Zygote do
 
   describe ".seed" do
     before do
-      define_table(:seeded_models) { |t| t.string :name }
+      define_table(:seeded_models) do |t|
+        t.string :name
+        t.integer :parent_id
+      end
 
       define_active_record_class("SeededModel") do
+        belongs_to :parent, class_name: "SeededModel"
       end
     end
 
@@ -21,6 +25,12 @@ describe Zygote do
         an_object_having_attributes(id: 1, name: "simple model"),
         an_object_having_attributes(id: 2, name: "named model"),
         an_object_having_attributes(id: 3, name: "keyed model"),
+
+        an_object_having_attributes(
+          id: 4,
+          name: "model with association",
+          parent: an_object_having_attributes(name: "named model")
+        )
       )
     end
   end
