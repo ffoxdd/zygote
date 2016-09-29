@@ -8,7 +8,10 @@ describe Zygote do
 
   describe ".seed" do
     before do
-      define_active_record_class("SeededModel") { |t| t.string :name }
+      define_table(:seeded_models) { |t| t.string :name }
+
+      define_active_record_class("SeededModel") do
+      end
     end
 
     it "loads all seed files" do

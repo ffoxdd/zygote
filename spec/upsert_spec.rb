@@ -4,7 +4,7 @@ RSpec.describe Zygote::Upsert do
 
   describe ".perform" do
     before do
-      define_active_record_class("SeededModel") do |t|
+      active_record_class("SeededModel") do |t|
         t.string :name
         t.integer :value
       end

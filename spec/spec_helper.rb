@@ -21,11 +21,18 @@ RSpec.configure do |config|
   end
 end
 
-def define_active_record_class(class_name, &table_definition)
+def define_table(table_name, &table_definition)
   ActiveRecord::Schema.define version: 0 do
-    create_table(class_name.tableize, {force: true}, &table_definition)
+    create_table(table_name, {force: true}, &table_definition)
   end
+end
 
-  stub_const(class_name.classify, Class.new(ActiveRecord::Base))
+def define_active_record_class(class_name, &definition)
+  stub_const(class_name.classify, Class.new(ActiveRecord::Base, &definition))
   class_name.classify.constantize.reset_column_information
+end
+
+def active_record_class(class_name, &table_definition)
+  define_table(class_name.tableize, &table_definition)
+  define_active_record_class(class_name.classify)
 end
